@@ -1,110 +1,95 @@
-import React, { useState } from 'react';
-import Style from './style.css';
+import React, { useState, useEffect } from 'react';
+import './style.css';
 
 const App = () => {
-  const [todos, setTodos] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-  const [filter, setFilter] = useState('all'); // all, active, completed
+  const [todos, setTodos] = useState(() => {
+    try {
+      const saved = localStorage.getItem('app-todos');
+      const parsedTodos = saved ? JSON.parse(saved) : [];
+      console.log('Initial todos loaded:', parsedTodos);
+      return parsedTodos;
+    } catch (error) {
+      console.error('Error loading todos:', error);
+      return [];
+    }
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('app-todos', JSON.stringify(todos));
+      console.log('Todos saved:', todos);
+
+      const stats = {
+        total: todos.length,
+        completed: todos.filter(todo => todo.completed).length
+      };
+
+      localStorage.setItem('app-stats', JSON.stringify(stats));
+      console.log('Stats saved:', stats);
+
+      const event = new CustomEvent('STATS_UPDATED', { detail: stats });
+      window.dispatchEvent(event);
+      console.log('Stats broadcasted');
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  }, [todos]);
+
+  const handleAddTodo = () => {
     if (inputValue.trim()) {
-      setTodos([...todos, {
+      const newTodo = {
         id: Date.now(),
         text: inputValue.trim(),
-        completed: false,
-        createdAt: new Date()
-      }]);
+        completed: false
+      };
+      setTodos(prev => [...prev, newTodo]);
       setInputValue('');
     }
   };
 
-  const toggleTodo = (id) => {
-    setTodos(todos.map(todo =>
+  const handleToggleComplete = (id) => {
+    setTodos(prev => prev.map(todo => 
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     ));
   };
 
-  const deleteTodo = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+  const handleDelete = (id) => {
+    setTodos(prev => prev.filter(todo => todo.id !== id));
   };
 
-  const filteredTodos = todos.filter(todo => {
-    if (filter === 'active') return !todo.completed;
-    if (filter === 'completed') return todo.completed;
-    return true;
-  });
+  const handleShowStatus = () => {
+    window.dispatchEvent(new Event('switchToMF2'));
+  };
 
   return (
     <div className="mf1">
-      <header className="header">
-        <h1>MF1 Todo List</h1>
-      </header>
+      <div className="todo-input">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleAddTodo()}
+          placeholder="Enter a new todo"
+        />
+        <button onClick={handleAddTodo}>Add Todo</button>
+        <button onClick={handleShowStatus} className="status-button">Show Status</button>
+      </div>
 
-      <main className="todo-container">
-        {/* Add Todo Form */}
-        <form onSubmit={handleSubmit} className="todo-form">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Add a new task..."
-            className="todo-input"
-          />
-          <button type="submit" className="add-button">Add Task</button>
-        </form>
-
-        {/* Filter Buttons */}
-        <div className="filter-buttons">
-          <button 
-            onClick={() => setFilter('all')}
-            className={filter === 'all' ? 'active' : ''}
-          >
-            All
-          </button>
-          <button 
-            onClick={() => setFilter('active')}
-            className={filter === 'active' ? 'active' : ''}
-          >
-            Active
-          </button>
-          <button 
-            onClick={() => setFilter('completed')}
-            className={filter === 'completed' ? 'active' : ''}
-          >
-            Completed
-          </button>
-        </div>
-
-        {/* Todo List */}
-        <ul className="todo-list">
-          {filteredTodos.map(todo => (
-            <li key={todo.id} className="todo-item">
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => toggleTodo(todo.id)}
-              />
-              <span className={todo.completed ? 'completed' : ''}>
-                {todo.text}
-              </span>
-              <button 
-                onClick={() => deleteTodo(todo.id)}
-                className="delete-button"
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        {/* Todo Stats */}
-        <div className="todo-stats">
-          <p>Total tasks: {todos.length}</p>
-          <p>Completed: {todos.filter(todo => todo.completed).length}</p>
-          <p>Active: {todos.filter(todo => !todo.completed).length}</p>
-        </div>
-      </main>
+      <ul className="todo-list">
+        {todos.map(todo => (
+          <li key={todo.id} className={todo.completed ? 'completed' : ''}>
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => handleToggleComplete(todo.id)}
+            />
+            <span>{todo.text}</span>
+            <button onClick={() => handleDelete(todo.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

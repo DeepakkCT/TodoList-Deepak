@@ -1,111 +1,310 @@
+/* Keyframe Animations */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromLeft {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Main Styles with Animations */
 .mf1 {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background: linear-gradient(120deg, #f6f8ff, #ffffff);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: scaleIn 0.5s ease-out;
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
+}
+
+.mf1 h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: -1px;
+  animation: slideFromLeft 0.6s ease-out;
+  position: relative;
+}
+
+.mf1 h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: #4a90e2;
+  border-radius: 2px;
+  animation: scaleIn 0.8s ease-out;
+}
+
+.todo-input {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2rem;
+  animation: fadeSlideIn 0.7s ease-out;
+}
+
+.todo-input input {
+  flex: 1;
+  padding: 14px 18px;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.todo-input input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
+  transform: translateY(-2px);
+}
+
+.todo-input button {
+  padding: 14px 24px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: bounce 1s ease infinite;
+  animation-play-state: paused;
+}
+
+.todo-input button:hover {
+  background: #357abd;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+  animation-play-state: running;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todo-list li {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeSlideIn 0.5s ease-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.todo-list li:hover {
+  transform: translateX(8px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.todo-list li input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.todo-list li input[type="checkbox"]:checked + span {
+  animation: slideFromLeft 0.3s ease-out;
+}
+
+.todo-list li span {
+  flex: 1;
+  font-size: 1rem;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+}
+
+.todo-list li.completed {
+  background: rgba(245, 245, 245, 0.9);
+  animation: fadeSlideIn 0.3s ease-out;
+}
+
+.todo-list li.completed span {
+  text-decoration: line-through;
+  color: #adb5bd;
+}
+
+.todo-list li button {
+  padding: 8px 16px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+.todo-list li:hover button {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.todo-list li button:hover {
+  background: #ff5252;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.switch-button {
+  display: block;
+  width: fit-content;
+  margin: 2rem auto 0;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeSlideIn 0.8s ease-out;
+  background-size: 200% 200%;
+}
+
+.switch-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3);
+  animation: gradient 3s ease infinite;
+}
+
+/* Loading Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #4a90e2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+/* Responsive Animations */
+@media (max-width: 768px) {
+  .mf1 {
+    margin: 1rem;
+    padding: 1.5rem;
   }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .todo-container {
-    background: #f5f5f5;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .todo-form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
+
   .todo-input {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+    flex-direction: column;
   }
-  
-  .add-button {
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+
+  .todo-list li button {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .add-button:hover {
-    background-color: #45a049;
-  }
-  
-  .filter-buttons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .filter-buttons button {
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
-    cursor: pointer;
-  }
-  
-  .filter-buttons button.active {
-    background: #007bff;
-    color: white;
-  }
-  
-  .todo-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .todo-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background: white;
-    margin-bottom: 8px;
-    border-radius: 4px;
-    gap: 10px;
-  }
-  
-  .todo-item span {
-    flex: 1;
-  }
-  
-  .todo-item span.completed {
-    text-decoration: line-through;
-    color: #888;
-  }
-  
-  .delete-button {
-    padding: 4px 8px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .delete-button:hover {
-    background-color: #c82333;
-  }
-  
-  .todo-stats {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-  }
-  
-  .todo-stats p {
-    margin: 5px 0;
-    color: #666;
-  }
+}
+
+/* Hover Effects */
+* {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Scrollbar with Animation */
+::-webkit-scrollbar {
+  width: 8px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a90e2;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #357abd;
+  transform: scale(1.1);
+}
+
+.status-button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.status-button:hover {
+  background-color: #45a049;
+}

@@ -1,8 +1,127 @@
 .mf2 {
-    border: 2px solid #EF0107;
-    height: 50%;
-    width: 50%;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f6f8ff, #ffffff);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .mf2 h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    animation: slideDown 0.5s ease-out;
+  }
+  
+  .status-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .status-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    animation: scaleIn 0.5s ease-out;
+  }
+  
+  .status-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .status-card h2 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .status-card .count {
+    font-size: 3rem;
+    font-weight: bold;
+    display: block;
+  }
+  
+  .status-card.total {
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: white;
+  }
+  
+  .status-card.completed {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+  }
+  
+  .status-card.pending {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    color: white;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .status-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .status-card {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .dashboard-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-}
+    margin-bottom: 2rem;
+  }
+  
+  .back-button {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #357abd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
